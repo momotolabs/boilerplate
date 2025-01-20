@@ -6,9 +6,14 @@ include .env
 help:
 	@echo "Useful  commands"
 install:
-	@docker exec -it $(SHORT_NAME)_php @composer install
+	@docker exec -it $(SHORT_NAME)_php composer install
 packagedev:
 	@docker exec -it $(SHORT_NAME)_php composer require $(package-name) --dev
+package:
+	@docker exec -it $(SHORT_NAME)_php composer require $(package-name)
+dump:
+	@docker exec -it $(SHORT_NAME)_php composer dump
+
 test:
 	@docker exec -it $(SHORT_NAME)_php php artisan test
 coverage:

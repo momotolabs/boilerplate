@@ -22,6 +22,12 @@ Los comando actuales son los siguientes:
 `install`: se utiliaza para el poder ejecutar la instalacion del proyecto de laravel dicha ejecucion se da en el contenedor
 de docker
 
+`package`: se utiliaza para el instalar un nuevo paquete de composer
+
+`packagedev`: idem al anterior con la diferenia que instala el paquete como depedencia de desarrollo
+
+`dump`: hace un composer dump sobre el proyecto dentro del container
+
 `test`: ejecuta dentro del contenedor la instrucción para correr los test de laravel
 
 `coverage`: ejecuta los test con un complemento de cobertura de código esto lo permitirá siempre y cuando este configurada
