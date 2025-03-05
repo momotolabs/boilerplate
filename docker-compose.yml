@@ -1,0 +1,50 @@
+services:
+    web:
+        container_name:  "${SHORT_NAME}_web"
+        build:
+            context: ./docker/nginx
+            dockerfile: Dockerfile
+        ports:
+            - "${PORT_WEB:-80}:80"
+        volumes:
+            - ".:/var/www/html:cached"
+            - ./docker/nginx/default.conf:/etc/nginx/conf.d/default.conf
+        depends_on:
+            - php-fpm
+        extra_hosts:
+            - host.docker.internal:host-gateway
+        working_dir: /var/www/html/
+    php-fpm:
+        container_name:  "${SHORT_NAME}_php"
+#        build:
+#            context: ./docker/php
+#            dockerfile: Dockerfile
+        image: momotolabs/php-momoto:1.0
+        environment:
+            - USERNAME=${USR}
+            - PHP_IDE_CONFIG="serverName=localhost"
+        working_dir: /var/www/html/
+        volumes:
+            - ".:/var/www/html:cached"
+
+        extra_hosts:
+            - host.docker.internal:host-gateway
+        depends_on:
+            - db
+            - redis
+    db:
+        container_name:  "${SHORT_NAME}_db"
+        image: mariadb:11.1
+        environment:
+            MYSQL_ROOT_PASSWORD: "${DB_SUPER:-secret}"
+            MYSQL_USER: "${DB_USERNAME:-develop}"
+            MYSQL_PASSWORD: "${DB_PASSWORD:-secret}"
+            MYSQL_DATABASE: "${DB_DATABASE:-biller}"
+        ports:
+            - "3306:3306"
+
+    redis:
+        container_name:  "${SHORT_NAME}_redis"
+        image: redis:7-alpine3.19
+        ports:
+            - "6379:6379"
